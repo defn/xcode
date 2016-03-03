@@ -6,14 +6,14 @@ function main {
   
   case "$(uname -s)" in
     Darwin)
-      if ! git version 1>/dev/null 2>&1; then
-        return 0
+      if git version 1>/dev/null 2>&1; then
+        return 1
       fi
       ;;
 
   esac
 
-  return 1
+  return 0
 }
 
 source sub "$BASH_SOURCE" "$@"
