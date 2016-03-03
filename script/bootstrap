@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+function bootstrap {
+  local shome="$(cd -P -- "$(dirname -- "$BASH_SOURCE")/.." && pwd -P)"
+  source "$shome/script/profile"
+
+  touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+	trap 'rm -f /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress' EXIT
+  local nm_xcode="$(softwareupdate -l | grep "\*.*Command Line" | head -n 1 | awk -F"*" '{print $2}' | sed -e 's#^ *##' | tr -d '\n')"
+	if [[ -n "$nm_xcode" ]]; then
+  	softwareupdate -i "$nm_xcode" -v
+	else
+		echo "INFO: nothing to do"
+	fi
+}
+
+bootstrap
